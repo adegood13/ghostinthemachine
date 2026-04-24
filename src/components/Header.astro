@@ -1,0 +1,93 @@
+---
+import { siteConfig } from '@/config/site';
+import ThemeToggle from './ThemeToggle.astro';
+
+const nav = [
+  { label: 'Episodes', href: '/episodes' },
+  { label: 'Guests', href: '/guests' },
+  { label: 'Listen', href: '/listen' },
+  { label: 'Watch', href: '/watch' },
+  { label: 'About', href: '/about' },
+  { label: 'Submit', href: '/submit' },
+];
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="sticky top-0 z-40 border-b border-ghost-white/10 bg-signal-black/85 backdrop-blur supports-[backdrop-filter]:bg-signal-black/70">
+  <div class="container-site flex items-center justify-between py-4">
+    <a href="/" class="flex items-center gap-3 group" aria-label={`${siteConfig.name} home`}>
+      <span class="flex h-9 w-9 items-center justify-center border border-ghost-white/30 group-hover:border-static-teal transition-colors" aria-hidden="true">
+        <span class="font-display font-black text-lg tracking-tighter">GM</span>
+      </span>
+      <span class="font-display font-black uppercase tracking-tight text-sm md:text-base">
+        {siteConfig.name}
+      </span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-6" aria-label="Primary">
+      {nav.map((item) => {
+        const active = pathname === item.href || pathname.startsWith(item.href + '/');
+        return (
+          <a
+            href={item.href}
+            class:list={[
+              'text-sm uppercase tracking-[0.14em] font-medium transition-colors',
+              active ? 'text-static-teal' : 'text-ghost-white/80 hover:text-static-teal',
+            ]}
+            aria-current={active ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+      <ThemeToggle />
+    </nav>
+
+    <div class="flex md:hidden items-center gap-2">
+      <ThemeToggle />
+      <button
+        type="button"
+        class="flex h-10 w-10 items-center justify-center border border-ghost-white/30"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+        data-nav-toggle
+      >
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="square" d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav class="md:hidden hidden border-t border-ghost-white/10 bg-signal-black" data-mobile-nav aria-label="Primary mobile">
+    <ul class="container-site py-4 space-y-3">
+      {nav.map((item) => {
+        const active = pathname === item.href || pathname.startsWith(item.href + '/');
+        return (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                'block py-2 text-base uppercase tracking-[0.14em] font-medium',
+                active ? 'text-static-teal' : 'text-ghost-white/80',
+              ]}
+              aria-current={active ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-mobile-nav]');
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+</script>

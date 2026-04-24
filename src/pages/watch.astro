@@ -1,0 +1,59 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LiveIndicator from '@/components/LiveIndicator.astro';
+import NewsletterSignup from '@/components/NewsletterSignup.astro';
+import { siteConfig } from '@/config/site';
+
+const youtubeUrl = import.meta.env.PUBLIC_YOUTUBE_CHANNEL_URL ?? siteConfig.social.youtube;
+const linkedinUrl = import.meta.env.PUBLIC_LINKEDIN_URL ?? siteConfig.social.linkedin;
+---
+
+<BaseLayout
+  title="Watch"
+  description={`Watch ${siteConfig.name} live every ${siteConfig.schedule.liveDay} on YouTube and LinkedIn.`}
+>
+  <section class="container-site pt-16 md:pt-24 pb-6">
+    <span class="eyebrow">Watch</span>
+    <h1 class="mt-4 text-display-lg uppercase text-balance">
+      Live every {siteConfig.schedule.liveDay} at {siteConfig.schedule.liveTime}.
+    </h1>
+    <p class="mt-6 max-w-prose text-lg text-circuit-silver leading-relaxed">
+      We stream the show live on YouTube and LinkedIn, in that order of embeddability. Come hang out in the chat, drop a question, watch the conversation happen in real time. We publish the audio cut shortly after.
+    </p>
+  </section>
+
+  <section class="container-site py-8">
+    <LiveIndicator variant="hero" />
+  </section>
+
+  <section class="container-site py-12 grid gap-4 md:grid-cols-2">
+    <a href={youtubeUrl} target="_blank" rel="noopener" class="card p-6 hover:border-static-teal">
+      <span class="eyebrow">YouTube</span>
+      <h2 class="mt-2 font-display font-extrabold tracking-tight text-xl">Subscribe on YouTube</h2>
+      <p class="mt-2 text-circuit-silver text-sm">Full video episodes, live streams, and clips.</p>
+      <p class="mt-4 text-static-teal text-sm font-medium uppercase tracking-[0.14em]">Go to channel &rarr;</p>
+    </a>
+    <a href={linkedinUrl} target="_blank" rel="noopener" class="card p-6 hover:border-static-teal">
+      <span class="eyebrow">LinkedIn</span>
+      <h2 class="mt-2 font-display font-extrabold tracking-tight text-xl">Follow on LinkedIn</h2>
+      <p class="mt-2 text-circuit-silver text-sm">Live streams, show notes, and the professional crowd.</p>
+      <p class="mt-4 text-static-teal text-sm font-medium uppercase tracking-[0.14em]">Go to page &rarr;</p>
+    </a>
+  </section>
+
+  <section class="container-site py-12">
+    <div class="card p-8">
+      <span class="eyebrow">Schedule</span>
+      <h2 class="mt-2 font-display font-extrabold tracking-tight text-2xl">
+        Every {siteConfig.schedule.liveDay}, {siteConfig.schedule.liveTime}
+      </h2>
+      <p class="mt-3 text-circuit-silver max-w-prose">
+        We go live on YouTube and LinkedIn at the same time via Restream. If you can only watch one, YouTube has the full embed and a chat. LinkedIn is better if you want the conversation to land on your feed.
+      </p>
+    </div>
+  </section>
+
+  <section class="container-site py-12">
+    <NewsletterSignup />
+  </section>
+</BaseLayout>

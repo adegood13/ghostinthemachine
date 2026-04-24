@@ -1,0 +1,81 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import TransistorPlayer from '@/components/TransistorPlayer.astro';
+import { guests, type Guest } from '@/config/guests';
+import { loadFeed } from '@/lib/rss';
+
+export async function getStaticPaths() {
+  const feed = await loadFeed();
+  return guests.map((guest) => {
+    const episodes = feed.episodes.filter((e) => e.guest === guest.name);
+    return { params: { slug: guest.slug }, props: { guest, episodes } };
+  });
+}
+
+interface Props {
+  guest: Guest;
+  episodes: Awaited<ReturnType<typeof loadFeed>>['episodes'];
+}
+
+const { guest, episodes } = Astro.props as Props;
+---
+
+<BaseLayout
+  title={guest.name}
+  description={guest.bio}
+  ogType="article"
+>
+  <section class="container-site pt-12 md:pt-16">
+    <a href="/guests" class="text-sm text-circuit-silver link-hover">&larr; All guests</a>
+  </section>
+
+  <section class="container-site py-8 md:py-12">
+    <div class="grid gap-8 md:grid-cols-[240px_1fr] md:gap-12 items-start">
+      <div class="h-60 w-60 overflow-hidden border border-ghost-white/10 bg-signal-black">
+        <img src={guest.image ?? '/images/guests/placeholder.svg'} alt={`Portrait of ${guest.name}`} class="h-full w-full object-cover" />
+      </div>
+      <div>
+        <span class="eyebrow">Guest</span>
+        <h1 class="mt-2 font-display font-black tracking-tight text-display-md uppercase text-balance">
+          {guest.name}
+        </h1>
+        <p class="mt-2 text-lg text-circuit-silver">{guest.title}, {guest.company}</p>
+        <p class="mt-5 max-w-prose text-ghost-white/90 leading-relaxed">{guest.bio}</p>
+        <div class="mt-6 flex flex-wrap gap-4 text-sm">
+          {guest.links.website && <a class="btn-ghost text-xs" href={guest.links.website} target="_blank" rel="noopener">Website</a>}
+          {guest.links.linkedin && <a class="btn-ghost text-xs" href={guest.links.linkedin} target="_blank" rel="noopener">LinkedIn</a>}
+          {guest.links.twitter && <a class="btn-ghost text-xs" href={guest.links.twitter} target="_blank" rel="noopener">Twitter</a>}
+          {guest.links.other && <a class="btn-ghost text-xs" href={guest.links.other.url} target="_blank" rel="noopener">{guest.links.other.label}</a>}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-site py-8">
+    <h2 class="font-display font-extrabold tracking-tight text-2xl mb-6">
+      Episodes with {guest.name.split(' ')[0]}
+    </h2>
+    {episodes.length === 0 ? (
+      <p class="text-circuit-silver">No episodes linked yet. Check back after the show airs.</p>
+    ) : (
+      <div class="space-y-6">
+        {episodes.map((ep) => (
+          <article class="card p-6 md:p-8">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-circuit-silver">
+              {ep.episodeNumber != null && <span class="eyebrow">Ep. {ep.episodeNumber}</span>}
+              <span>{ep.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+              {ep.duration && <span>· {ep.duration}</span>}
+            </div>
+            <h3 class="mt-2 font-display font-extrabold tracking-tight text-xl md:text-2xl">
+              <a href={`/episodes/${ep.slug}`} class="hover:text-static-teal transition-colors">{ep.title}</a>
+            </h3>
+            <p class="mt-3 text-ghost-white/85 leading-relaxed">{ep.description}</p>
+            <div class="mt-5">
+              <TransistorPlayer episode={ep} />
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

@@ -1,0 +1,52 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<div class="flex flex-wrap items-center gap-2" data-share-root data-title={title} data-description={description ?? ''}>
+  <button type="button" class="btn-ghost text-xs" data-share-native hidden>
+    Share
+  </button>
+  <button type="button" class="btn-ghost text-xs" data-share-copy>
+    Copy link
+  </button>
+  <span class="text-xs text-circuit-silver" data-share-status aria-live="polite"></span>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-share-root]').forEach((root) => {
+    const title = root.dataset.title ?? '';
+    const description = root.dataset.description ?? '';
+    const nativeBtn = root.querySelector<HTMLButtonElement>('[data-share-native]');
+    const copyBtn = root.querySelector<HTMLButtonElement>('[data-share-copy]');
+    const status = root.querySelector<HTMLElement>('[data-share-status]');
+    const url = window.location.href;
+
+    if (navigator.share && nativeBtn) {
+      nativeBtn.hidden = false;
+      nativeBtn.addEventListener('click', async () => {
+        try {
+          await navigator.share({ title, text: description, url });
+        } catch {
+          // user cancelled
+        }
+      });
+    }
+
+    copyBtn?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(url);
+        if (status) {
+          status.textContent = 'Copied';
+          setTimeout(() => { if (status) status.textContent = ''; }, 2000);
+        }
+      } catch {
+        if (status) status.textContent = 'Copy failed';
+      }
+    });
+  });
+</script>

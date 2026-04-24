@@ -1,0 +1,41 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import EpisodeSearch from '@/components/EpisodeSearch.tsx';
+import NewsletterSignup from '@/components/NewsletterSignup.astro';
+import { loadFeed } from '@/lib/rss';
+import { siteConfig } from '@/config/site';
+
+const feed = await loadFeed();
+const episodesLite = feed.episodes.map((e) => ({
+  slug: e.slug,
+  title: e.title,
+  description: e.description,
+  guest: e.guest,
+  artwork: e.artwork,
+  pubDateISO: e.pubDateISO,
+  duration: e.duration,
+  episodeNumber: e.episodeNumber,
+  season: e.season,
+}));
+---
+
+<BaseLayout
+  title="Episodes"
+  description={`Every episode of ${siteConfig.name}. Search by title, guest, or topic.`}
+>
+  <section class="container-site pt-16 md:pt-24 pb-6">
+    <span class="eyebrow">Archive</span>
+    <h1 class="mt-4 text-display-lg uppercase text-balance">All episodes</h1>
+    <p class="mt-6 max-w-prose text-lg text-circuit-silver leading-relaxed">
+      The full archive. Filter by season, search by guest or topic, or just scroll. New drops every {siteConfig.schedule.liveDay}.
+    </p>
+  </section>
+
+  <section class="container-site py-8">
+    <EpisodeSearch client:load episodes={episodesLite} />
+  </section>
+
+  <section class="container-site py-12">
+    <NewsletterSignup />
+  </section>
+</BaseLayout>

@@ -1,0 +1,52 @@
+---
+import { siteConfig } from '@/config/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-ghost-white/10">
+  <div class="container-site py-12 grid gap-10 md:grid-cols-4">
+    <div class="md:col-span-2">
+      <div class="flex items-center gap-3">
+        <span class="flex h-9 w-9 items-center justify-center border border-ghost-white/30" aria-hidden="true">
+          <span class="font-display font-black text-lg tracking-tighter">GM</span>
+        </span>
+        <span class="font-display font-black uppercase tracking-tight">{siteConfig.name}</span>
+      </div>
+      <p class="mt-4 max-w-md text-sm text-circuit-silver leading-relaxed">
+        {siteConfig.description}
+      </p>
+    </div>
+
+    <div>
+      <h2 class="eyebrow mb-4">The Show</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a class="link-hover" href="/episodes">Episodes</a></li>
+        <li><a class="link-hover" href="/guests">Guests</a></li>
+        <li><a class="link-hover" href="/about">About</a></li>
+        <li><a class="link-hover" href="/listen">Where to listen</a></li>
+        <li><a class="link-hover" href="/watch">Watch live</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="eyebrow mb-4">Get in Touch</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a class="link-hover" href="/submit">Submit a guest</a></li>
+        <li><a class="link-hover" href="/contact">Contact</a></li>
+        <li><a class="link-hover" href={siteConfig.social.youtube} rel="noopener">YouTube</a></li>
+        <li><a class="link-hover" href={siteConfig.social.linkedin} rel="noopener">LinkedIn</a></li>
+        <li><a class="link-hover" href={`mailto:${siteConfig.social.email}`}>Email</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider" />
+  <div class="container-site py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-circuit-silver">
+    <p>
+      &copy; {year} {siteConfig.legal.copyrightHolder}. All rights reserved.
+    </p>
+    <p class="font-medium tracking-[0.14em] uppercase">
+      {siteConfig.tagline}
+    </p>
+  </div>
+</footer>

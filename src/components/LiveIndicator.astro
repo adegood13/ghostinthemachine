@@ -1,0 +1,73 @@
+---
+import { liveConfig } from '@/config/live';
+import { siteConfig } from '@/config/site';
+
+export interface Props {
+  variant?: 'hero' | 'inline';
+}
+
+const { variant = 'hero' } = Astro.props;
+const isLive = liveConfig.isLive && liveConfig.youtubeVideoId;
+
+const nextDate = liveConfig.nextEpisodeDate
+  ? new Date(liveConfig.nextEpisodeDate)
+  : null;
+const nextDateLabel = nextDate
+  ? nextDate.toLocaleDateString('en-US', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+    })
+  : `Every ${siteConfig.schedule.liveDay}`;
+const nextTimeLabel = nextDate
+  ? nextDate.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'short',
+    })
+  : siteConfig.schedule.liveTime;
+---
+
+{isLive ? (
+  <section class:list={['border border-red-500/60 bg-signal-black', variant === 'hero' ? 'p-6' : 'p-4']}>
+    <div class="flex items-center gap-3 mb-4">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span class="font-display font-black uppercase tracking-[0.18em] text-sm text-red-400">Live now</span>
+      <span class="text-xs text-circuit-silver">Broadcasting on YouTube and LinkedIn</span>
+    </div>
+    <div class="relative aspect-video w-full overflow-hidden bg-signal-black">
+      <iframe
+        class="absolute inset-0 h-full w-full"
+        src={`https://www.youtube.com/embed/${liveConfig.youtubeVideoId}?autoplay=0&modestbranding=1&rel=0`}
+        title="Ghost in the Machine live stream"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-3">
+      <a class="btn-ghost" href={`https://www.youtube.com/watch?v=${liveConfig.youtubeVideoId}`} target="_blank" rel="noopener">
+        Open in YouTube
+      </a>
+      <a class="btn-ghost" href={siteConfig.social.linkedin} target="_blank" rel="noopener">
+        Watch on LinkedIn
+      </a>
+    </div>
+  </section>
+) : (
+  <section class:list={['card', variant === 'hero' ? 'p-6' : 'p-5']}>
+    <div class="flex items-center gap-3">
+      <span class="inline-block h-2 w-2 bg-static-teal" aria-hidden="true"></span>
+      <span class="eyebrow">Next episode</span>
+    </div>
+    <p class="mt-3 font-display font-extrabold tracking-tight text-xl md:text-2xl">
+      {nextDateLabel}<span class="text-circuit-silver font-normal"> at </span>{nextTimeLabel}
+    </p>
+    {liveConfig.nextEpisodeTopic && (
+      <p class="mt-2 text-circuit-silver">{liveConfig.nextEpisodeTopic}</p>
+    )}
+    <div class="mt-4 flex flex-wrap gap-3">
+      <a class="btn-ghost" href="/watch">How to watch live</a>
+    </div>
+  </section>
+)}

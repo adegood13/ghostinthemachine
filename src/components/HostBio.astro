@@ -1,0 +1,48 @@
+---
+export interface Props {
+  host: {
+    name: string;
+    role: string;
+    company: string;
+    bioShort: string;
+    bioLong?: string;
+    image: string;
+    links: { linkedin?: string; website?: string };
+  };
+  variant?: 'short' | 'long';
+}
+
+const { host, variant = 'short' } = Astro.props;
+---
+
+<article class="card p-6 md:p-8 flex flex-col gap-5">
+  <div class="flex items-center gap-5">
+    <div class="h-20 w-20 md:h-24 md:w-24 shrink-0 overflow-hidden border border-ghost-white/10 bg-signal-black">
+      <img
+        src={host.image}
+        alt={`Headshot of ${host.name}`}
+        loading="lazy"
+        decoding="async"
+        class="h-full w-full object-cover"
+      />
+    </div>
+    <div class="min-w-0">
+      <h3 class="font-display font-extrabold tracking-tight text-xl md:text-2xl">{host.name}</h3>
+      <p class="mt-1 eyebrow">{host.role}</p>
+      <p class="mt-1 text-sm text-circuit-silver">{host.company}</p>
+    </div>
+  </div>
+  <p class="text-ghost-white/90 leading-relaxed">
+    {variant === 'long' ? (host.bioLong ?? host.bioShort) : host.bioShort}
+  </p>
+  {(host.links.linkedin || host.links.website) && (
+    <div class="flex flex-wrap gap-4 text-sm">
+      {host.links.website && (
+        <a class="link-hover text-static-teal" href={host.links.website} target="_blank" rel="noopener">Website</a>
+      )}
+      {host.links.linkedin && (
+        <a class="link-hover text-static-teal" href={host.links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      )}
+    </div>
+  )}
+</article>

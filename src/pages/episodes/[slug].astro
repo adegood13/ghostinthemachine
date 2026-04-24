@@ -1,0 +1,183 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import TransistorPlayer from '@/components/TransistorPlayer.astro';
+import ShareButtons from '@/components/ShareButtons.astro';
+import PlatformGrid from '@/components/PlatformGrid.astro';
+import { loadFeed, type PodcastEpisode } from '@/lib/rss';
+import { findGuestByName } from '@/config/guests';
+import { siteConfig } from '@/config/site';
+
+export async function getStaticPaths() {
+  const feed = await loadFeed();
+  return feed.episodes.map((episode, index) => ({
+    params: { slug: episode.slug },
+    props: {
+      episode,
+      prev: feed.episodes[index + 1] ?? null,
+      next: feed.episodes[index - 1] ?? null,
+    },
+  }));
+}
+
+interface Props {
+  episode: PodcastEpisode;
+  prev: PodcastEpisode | null;
+  next: PodcastEpisode | null;
+}
+
+const { episode, prev, next } = Astro.props as Props;
+const guest = findGuestByName(episode.guest);
+
+const pubDateLong = episode.pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+function formatTimestamp(seconds: number): string {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+const episodeSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'PodcastEpisode',
+  name: episode.title,
+  description: episode.description,
+  datePublished: episode.pubDateISO,
+  url: new URL(`/episodes/${episode.slug}`, siteConfig.url).toString(),
+  image: episode.artwork,
+  duration: episode.durationSeconds ? `PT${Math.floor(episode.durationSeconds / 60)}M` : undefined,
+  partOfSeries: {
+    '@type': 'PodcastSeries',
+    name: siteConfig.name,
+    url: siteConfig.url,
+  },
+  associatedMedia: episode.audioUrl ? {
+    '@type': 'MediaObject',
+    contentUrl: episode.audioUrl,
+  } : undefined,
+};
+---
+
+<BaseLayout
+  title={episode.title}
+  description={episode.description.slice(0, 160)}
+  image={episode.artwork}
+  ogType="article"
+  schema={episodeSchema}
+>
+  <article>
+    <div class="container-site pt-12 md:pt-16">
+      <a href="/episodes" class="text-sm text-circuit-silver link-hover">&larr; All episodes</a>
+    </div>
+
+    <section class="container-site py-8 md:py-12">
+      <div class="grid gap-8 md:grid-cols-[320px_1fr] md:gap-12">
+        <div>
+          <div class="aspect-square overflow-hidden border border-ghost-white/10 bg-signal-black max-w-sm">
+            <img src={episode.artwork} alt={`Artwork for ${episode.title}`} class="h-full w-full object-cover" />
+          </div>
+        </div>
+        <div>
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-circuit-silver">
+            {episode.seasonNumber != null && <span class="eyebrow">Season {episode.seasonNumber}</span>}
+            {episode.episodeNumber != null && <span class="eyebrow">Episode {episode.episodeNumber}</span>}
+            <span>{pubDateLong}</span>
+            {episode.duration && <span>· {episode.duration}</span>}
+          </div>
+          <h1 class="mt-3 font-display font-black tracking-tight text-display-md uppercase text-balance">
+            {episode.title}
+          </h1>
+          {episode.guest && (
+            <p class="mt-2 text-lg text-circuit-silver">
+              with <span class="text-ghost-white font-medium">{episode.guest}</span>
+            </p>
+          )}
+
+          <div class="mt-6">
+            <TransistorPlayer episode={episode} />
+          </div>
+
+          <div class="mt-4">
+            <ShareButtons title={episode.title} description={episode.description} />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container-site py-8 grid gap-10 md:grid-cols-[1fr_280px]">
+      <div>
+        <h2 class="font-display font-extrabold tracking-tight text-xl mb-3">Episode notes</h2>
+        <div class="prose-gitm" set:html={episode.contentHtml || `<p>${episode.description}</p>`} />
+
+        {episode.chapters.length > 0 && (
+          <div class="mt-10">
+            <h2 class="font-display font-extrabold tracking-tight text-xl mb-3">Chapters</h2>
+            <ol class="card divide-y divide-ghost-white/10">
+              {episode.chapters.map((c) => (
+                <li class="flex items-baseline gap-4 p-4">
+                  <span class="font-mono text-sm text-static-teal shrink-0 w-16">{formatTimestamp(c.start)}</span>
+                  <span class="text-ghost-white/90">{c.title}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+      </div>
+
+      <aside class="space-y-6">
+        {guest && (
+          <div class="card p-5">
+            <span class="eyebrow">Guest</span>
+            <h3 class="mt-2 font-display font-extrabold tracking-tight text-lg">{guest.name}</h3>
+            <p class="mt-1 text-sm text-circuit-silver">{guest.title}, {guest.company}</p>
+            <p class="mt-3 text-sm text-ghost-white/85 leading-relaxed">{guest.bio}</p>
+            <div class="mt-4 flex flex-wrap gap-3 text-sm">
+              <a class="text-static-teal link-hover" href={`/guests/${guest.slug}`}>Guest page</a>
+              {guest.links.website && <a class="text-static-teal link-hover" href={guest.links.website} target="_blank" rel="noopener">Website</a>}
+              {guest.links.linkedin && <a class="text-static-teal link-hover" href={guest.links.linkedin} target="_blank" rel="noopener">LinkedIn</a>}
+            </div>
+          </div>
+        )}
+
+        <div class="card p-5">
+          <span class="eyebrow">Listen anywhere</span>
+          <ul class="mt-3 space-y-2 text-sm">
+            {siteConfig.platforms.map((p) => (
+              <li>
+                <a class="link-hover" href={p.url} target={p.url.startsWith('http') ? '_blank' : undefined} rel={p.url.startsWith('http') ? 'noopener' : undefined}>
+                  {p.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </aside>
+    </section>
+
+    <section class="container-site py-12">
+      <div class="grid gap-4 md:grid-cols-2">
+        {prev ? (
+          <a href={`/episodes/${prev.slug}`} class="card p-5 group">
+            <span class="eyebrow">&larr; Previous episode</span>
+            <p class="mt-2 font-display font-bold tracking-tight text-lg group-hover:text-static-teal transition-colors">
+              {prev.title}
+            </p>
+          </a>
+        ) : <span />}
+        {next ? (
+          <a href={`/episodes/${next.slug}`} class="card p-5 group md:text-right">
+            <span class="eyebrow">Next episode &rarr;</span>
+            <p class="mt-2 font-display font-bold tracking-tight text-lg group-hover:text-static-teal transition-colors">
+              {next.title}
+            </p>
+          </a>
+        ) : <span />}
+      </div>
+    </section>
+  </article>
+</BaseLayout>

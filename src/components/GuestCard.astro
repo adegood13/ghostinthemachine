@@ -1,0 +1,35 @@
+---
+import type { Guest } from '@/config/guests';
+
+export interface Props {
+  guest: Guest;
+  episodeLabel?: string | null;
+}
+
+const { guest, episodeLabel } = Astro.props;
+---
+
+<a href={`/guests/${guest.slug}`} class="card block p-6 group">
+  <div class="flex items-start gap-4">
+    <div class="h-16 w-16 shrink-0 overflow-hidden border border-ghost-white/10 bg-signal-black">
+      <img
+        src={guest.image ?? '/images/guests/placeholder.svg'}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        class="h-full w-full object-cover"
+      />
+    </div>
+    <div class="min-w-0">
+      <h3 class="font-display font-extrabold tracking-tight text-lg text-ghost-white group-hover:text-static-teal transition-colors">
+        {guest.name}
+      </h3>
+      <p class="mt-1 text-sm text-circuit-silver truncate">
+        {guest.title}, {guest.company}
+      </p>
+      {episodeLabel && (
+        <p class="mt-2 eyebrow">{episodeLabel}</p>
+      )}
+    </div>
+  </div>
+</a>

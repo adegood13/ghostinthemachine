@@ -1,0 +1,48 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PlatformGrid from '@/components/PlatformGrid.astro';
+import NewsletterSignup from '@/components/NewsletterSignup.astro';
+import { siteConfig } from '@/config/site';
+---
+
+<BaseLayout
+  title="Listen"
+  description={`Listen to ${siteConfig.name} on every major podcast platform, or subscribe via RSS.`}
+>
+  <section class="container-site pt-16 md:pt-24 pb-6">
+    <span class="eyebrow">Listen</span>
+    <h1 class="mt-4 text-display-lg uppercase text-balance">
+      Pick a platform. We are on all of them.
+    </h1>
+    <p class="mt-6 max-w-prose text-lg text-circuit-silver leading-relaxed">
+      New episode every {siteConfig.schedule.liveDay}. Subscribe on the platform you already use, or grab the RSS feed and drop it into whatever app you like best.
+    </p>
+  </section>
+
+  <section class="container-site py-8">
+    <PlatformGrid heading={null} variant="full" />
+  </section>
+
+  <section class="container-site py-12">
+    <div class="card p-8 md:p-10 max-w-prose">
+      <h2 class="font-display font-extrabold tracking-tight text-2xl">New to podcasts?</h2>
+      <div class="prose-gitm mt-4">
+        <p>
+          A podcast is an audio show you can listen to on your phone or computer, for free, on demand. Most phones ship with a podcast app already installed.
+        </p>
+        <ol>
+          <li>Open Apple Podcasts (iPhone) or YouTube Music / Spotify (Android).</li>
+          <li>Search for <strong>Ghost in the Machine</strong>.</li>
+          <li>Tap Follow or Subscribe. New episodes download automatically.</li>
+        </ol>
+        <p>
+          If you use a different app (Overcast, Pocket Casts, Castro), the same search works. Or grab the <a href="/feed.xml">RSS feed</a> and paste it into any podcast app that supports one.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-site py-12">
+    <NewsletterSignup />
+  </section>
+</BaseLayout>

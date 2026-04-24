@@ -1,0 +1,50 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import HostBio from '@/components/HostBio.astro';
+import NewsletterSignup from '@/components/NewsletterSignup.astro';
+import { siteConfig } from '@/config/site';
+---
+
+<BaseLayout
+  title="About"
+  description="Ghost in the Machine is a weekly philosophical podcast about AI. One optimist, one skeptic, no hype."
+>
+  <section class="container-site pt-16 md:pt-24 pb-12">
+    <span class="eyebrow">About the show</span>
+    <h1 class="mt-4 text-display-lg uppercase text-balance">
+      A show about AI, built for the people it actually affects.
+    </h1>
+    <p class="mt-6 max-w-prose text-lg text-circuit-silver leading-relaxed">
+      Every week, Andrew DeGood and Liz Short sit across from each other and argue. About agents. About jobs. About whether the thing that just shipped is useful or is marketing. One of them is an optimist. One of them is a skeptic. Both of them care more about being honest than being right.
+    </p>
+    <p class="mt-4 max-w-prose text-lg text-circuit-silver leading-relaxed">
+      They bring on guests who build with AI, get replaced by it, sell it, regulate it, or refuse to touch it. Then they press both of them. Every episode runs through two lenses. Nobody gets an easy pass.
+    </p>
+    <p class="mt-4 max-w-prose text-lg text-circuit-silver leading-relaxed">
+      Live every {siteConfig.schedule.liveDay} at {siteConfig.schedule.liveTime} on YouTube and LinkedIn. On every podcast platform shortly after.
+    </p>
+  </section>
+
+  <section class="container-site py-12">
+    <h2 class="font-display font-extrabold tracking-tight text-display-md mb-8">The hosts</h2>
+    <div class="grid gap-6 md:grid-cols-2">
+      {siteConfig.hosts.map((host) => <HostBio host={host} variant="long" />)}
+    </div>
+  </section>
+
+  <section class="container-site py-12">
+    <h2 class="font-display font-extrabold tracking-tight text-display-md mb-8">Editorial principles</h2>
+    <div class="grid gap-4 md:grid-cols-2">
+      {siteConfig.editorialPrinciples.map((p) => (
+        <article class="card p-6">
+          <h3 class="font-display font-bold text-lg text-static-teal uppercase tracking-[0.12em]">{p.title}</h3>
+          <p class="mt-3 text-ghost-white/85 leading-relaxed">{p.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container-site py-12">
+    <NewsletterSignup />
+  </section>
+</BaseLayout>

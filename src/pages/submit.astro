@@ -1,0 +1,92 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Submit a guest"
+  description="Suggest a guest for Ghost in the Machine. Builders, operators, researchers, skeptics, and optimists welcome."
+>
+  <section class="container-site pt-16 md:pt-24 pb-8">
+    <span class="eyebrow">Submit a guest</span>
+    <h1 class="mt-4 text-display-lg uppercase text-balance">Tell us who to talk to next.</h1>
+    <p class="mt-6 max-w-prose text-lg text-circuit-silver leading-relaxed">
+      We prefer operators over pundits. Builders over commenters. People who have shipped something with AI, been replaced by it, sold it, refused to touch it, or are actively wrestling with what it does to their field. If that sounds like someone you know, tell us about them.
+    </p>
+  </section>
+
+  <section class="container-site py-8 pb-16">
+    <form
+      name="guest-submission"
+      method="POST"
+      action="/submit/thanks"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      class="card p-6 md:p-10 space-y-6 max-w-2xl"
+    >
+      <input type="hidden" name="form-name" value="guest-submission" />
+      <p class="hidden">
+        <label>Do not fill this out if you are human: <input name="bot-field" /></label>
+      </p>
+
+      <fieldset class="space-y-4">
+        <legend class="eyebrow">You</legend>
+        <label class="block">
+          <span class="block mb-2 text-sm font-medium">Your name <span class="text-static-teal">*</span></span>
+          <input type="text" name="submitter_name" required class="w-full bg-transparent border border-ghost-white/30 px-4 py-3 placeholder:text-circuit-silver focus:border-static-teal focus:outline-none" />
+        </label>
+        <label class="block">
+          <span class="block mb-2 text-sm font-medium">Your email <span class="text-static-teal">*</span></span>
+          <input type="email" name="submitter_email" required class="w-full bg-transparent border border-ghost-white/30 px-4 py-3 placeholder:text-circuit-silver focus:border-static-teal focus:outline-none" />
+        </label>
+        <label class="block">
+          <span class="block mb-2 text-sm font-medium">Your relationship to the guest</span>
+          <select name="relationship" class="w-full bg-signal-black border border-ghost-white/30 px-4 py-3 focus:border-static-teal focus:outline-none">
+            <option value="self">I am the guest</option>
+            <option value="personal">I know them personally</option>
+            <option value="fan">I am a fan suggesting them</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <div class="divider" />
+
+      <fieldset class="space-y-4">
+        <legend class="eyebrow">The guest</legend>
+        <label class="block">
+          <span class="block mb-2 text-sm font-medium">Guest name <span class="text-static-teal">*</span></span>
+          <input type="text" name="guest_name" required class="w-full bg-transparent border border-ghost-white/30 px-4 py-3 placeholder:text-circuit-silver focus:border-static-teal focus:outline-none" />
+        </label>
+        <label class="block">
+          <span class="block mb-2 text-sm font-medium">Company or role <span class="text-static-teal">*</span></span>
+          <input type="text" name="guest_company" required class="w-full bg-transparent border border-ghost-white/30 px-4 py-3 placeholder:text-circuit-silver focus:border-static-teal focus:outline-none" />
+        </label>
+        <label class="block">
+          <span class="block mb-2 text-sm font-medium">Why this guest, why now <span class="text-static-teal">*</span></span>
+          <textarea
+            name="why"
+            required
+            rows="5"
+            maxlength="500"
+            class="w-full bg-transparent border border-ghost-white/30 px-4 py-3 placeholder:text-circuit-silver focus:border-static-teal focus:outline-none"
+            placeholder="What makes this person worth an hour? What question would they answer better than anyone else we could book?"
+          ></textarea>
+          <span class="mt-1 block text-xs text-circuit-silver">500 characters max</span>
+        </label>
+        <label class="block">
+          <span class="block mb-2 text-sm font-medium">Link to their work</span>
+          <input type="url" name="guest_link" placeholder="https://" class="w-full bg-transparent border border-ghost-white/30 px-4 py-3 placeholder:text-circuit-silver focus:border-static-teal focus:outline-none" />
+        </label>
+        <label class="block">
+          <span class="block mb-2 text-sm font-medium">Anything else we should know</span>
+          <textarea name="notes" rows="3" class="w-full bg-transparent border border-ghost-white/30 px-4 py-3 placeholder:text-circuit-silver focus:border-static-teal focus:outline-none"></textarea>
+        </label>
+      </fieldset>
+
+      <div class="flex flex-wrap gap-3 items-center">
+        <button type="submit" class="btn-primary">Send submission</button>
+        <p class="text-xs text-circuit-silver">We read every submission. We cannot reply to every one.</p>
+      </div>
+    </form>
+  </section>
+</BaseLayout>

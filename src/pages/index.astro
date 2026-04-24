@@ -1,0 +1,162 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LiveIndicator from '@/components/LiveIndicator.astro';
+import EpisodeCard from '@/components/EpisodeCard.astro';
+import PlatformGrid from '@/components/PlatformGrid.astro';
+import NewsletterSignup from '@/components/NewsletterSignup.astro';
+import HostBio from '@/components/HostBio.astro';
+import TransistorPlayer from '@/components/TransistorPlayer.astro';
+import { loadFeed } from '@/lib/rss';
+import { siteConfig } from '@/config/site';
+
+const feed = await loadFeed();
+const [featured, ...rest] = feed.episodes;
+const recent = rest.slice(0, 6);
+
+const podcastSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'PodcastSeries',
+  name: siteConfig.name,
+  description: siteConfig.description,
+  url: siteConfig.url,
+  image: new URL(feed.artwork, siteConfig.url).toString(),
+  webFeed: `${siteConfig.url}/feed.xml`,
+  author: siteConfig.hosts.map((h) => ({ '@type': 'Person', name: h.name })),
+};
+---
+
+<BaseLayout
+  title={null}
+  description={siteConfig.shortDescription}
+  schema={podcastSchema}
+>
+  <!-- HERO -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute -top-20 -left-20 h-80 w-80 bg-static-teal/5 blur-3xl rounded-full"></div>
+      <div class="absolute -bottom-20 -right-10 h-96 w-96 bg-static-teal/5 blur-3xl rounded-full"></div>
+    </div>
+    <div class="container-site pt-16 md:pt-24 pb-12 md:pb-20 relative">
+      <div class="grid gap-10 md:grid-cols-[1.3fr_1fr] md:gap-16 items-center">
+        <div>
+          <span class="eyebrow">A weekly podcast on AI</span>
+          <h1 class="mt-4 text-display-xl uppercase text-balance">
+            {siteConfig.tagline}
+          </h1>
+          <p class="mt-6 max-w-xl text-lg text-circuit-silver leading-relaxed">
+            Andrew DeGood and Liz Short, one optimist and one skeptic, talk honestly about what AI is doing to work, thought, and the humans in the loop. New episode every {siteConfig.schedule.liveDay}.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a class="btn-primary" href="/listen">Listen now</a>
+            <a class="btn-ghost" href="/watch">Watch live</a>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="aspect-square border border-ghost-white/10 bg-signal-black overflow-hidden max-w-md mx-auto">
+            <img
+              src={feed.artwork}
+              alt={`${siteConfig.name} cover art`}
+              class="h-full w-full object-cover"
+              fetchpriority="high"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE / NEXT EPISODE -->
+  <section class="container-site py-8">
+    <LiveIndicator variant="hero" />
+  </section>
+
+  <!-- LATEST EPISODE -->
+  {featured && (
+    <section class="container-site py-12 md:py-16">
+      <div class="flex items-end justify-between mb-6 gap-4">
+        <div>
+          <span class="eyebrow">Latest episode</span>
+          <h2 class="mt-2 font-display font-extrabold tracking-tight text-display-md">
+            Just dropped
+          </h2>
+        </div>
+        <a class="link-hover text-static-teal text-sm font-medium uppercase tracking-[0.14em] hidden sm:inline" href="/episodes">
+          All episodes &rarr;
+        </a>
+      </div>
+
+      <div class="card p-6 md:p-10 grid gap-8 md:grid-cols-[320px_1fr] md:gap-10">
+        <div class="aspect-square max-w-sm overflow-hidden border border-ghost-white/10">
+          <img src={featured.artwork} alt="" class="h-full w-full object-cover" />
+        </div>
+        <div class="flex flex-col">
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-circuit-silver">
+            {featured.episodeNumber != null && <span class="eyebrow">Ep. {featured.episodeNumber}</span>}
+            <span>{featured.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            {featured.duration && <span>· {featured.duration}</span>}
+          </div>
+          <h3 class="mt-2 font-display font-extrabold tracking-tight text-2xl md:text-3xl text-balance">
+            {featured.title}
+          </h3>
+          {featured.guest && (
+            <p class="mt-1 text-sm text-circuit-silver">
+              with <span class="text-ghost-white font-medium">{featured.guest}</span>
+            </p>
+          )}
+          <p class="mt-4 text-ghost-white/85 leading-relaxed line-clamp-4">
+            {featured.description}
+          </p>
+          <div class="mt-6">
+            <TransistorPlayer episode={featured} />
+          </div>
+          <div class="mt-6">
+            <a href={`/episodes/${featured.slug}`} class="btn-ghost">Full episode page</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- RECENT EPISODES -->
+  {recent.length > 0 && (
+    <section class="container-site py-12">
+      <div class="flex items-end justify-between mb-6">
+        <h2 class="font-display font-extrabold tracking-tight text-display-md">Recent episodes</h2>
+        <a class="link-hover text-static-teal text-sm font-medium uppercase tracking-[0.14em] hidden sm:inline" href="/episodes">
+          All episodes &rarr;
+        </a>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2">
+        {recent.map((ep) => (
+          <EpisodeCard episode={ep} />
+        ))}
+      </div>
+      <div class="mt-8 sm:hidden">
+        <a href="/episodes" class="btn-ghost w-full justify-center">All episodes</a>
+      </div>
+    </section>
+  )}
+
+  <!-- WHERE TO LISTEN -->
+  <section class="container-site py-12">
+    <PlatformGrid heading="Where to listen" variant="full" />
+  </section>
+
+  <!-- HOSTS -->
+  <section class="container-site py-12">
+    <div class="flex items-end justify-between mb-6">
+      <h2 class="font-display font-extrabold tracking-tight text-display-md">The hosts</h2>
+      <a class="link-hover text-static-teal text-sm font-medium uppercase tracking-[0.14em] hidden sm:inline" href="/about">
+        About the show &rarr;
+      </a>
+    </div>
+    <div class="grid gap-6 md:grid-cols-2">
+      {siteConfig.hosts.map((host) => <HostBio host={host} />)}
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="container-site py-12">
+    <NewsletterSignup />
+  </section>
+</BaseLayout>

@@ -1,0 +1,17 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" description="The page you are looking for does not exist.">
+  <section class="container-site pt-24 pb-16 text-center">
+    <span class="eyebrow">404</span>
+    <h1 class="mt-4 text-display-xl uppercase">Dead air.</h1>
+    <p class="mt-6 max-w-prose mx-auto text-lg text-circuit-silver leading-relaxed">
+      The page you are looking for does not exist. It was moved, never written, or just a typo. Here is the way back.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="/" class="btn-primary">Home</a>
+      <a href="/episodes" class="btn-ghost">Episodes</a>
+    </div>
+  </section>
+</BaseLayout>

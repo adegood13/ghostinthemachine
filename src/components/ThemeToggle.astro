@@ -1,0 +1,43 @@
+---
+// Dark mode is the primary brand experience. Light mode is a secondary
+// option and is stored in localStorage.
+---
+
+<button
+  type="button"
+  class="flex h-10 w-10 items-center justify-center border border-ghost-white/30 hover:border-static-teal transition-colors"
+  aria-label="Toggle color theme"
+  data-theme-toggle
+>
+  <svg data-icon-dark class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+  </svg>
+  <svg data-icon-light class="h-4 w-4 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <circle cx="12" cy="12" r="4" />
+    <path stroke-linecap="round" d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+  </svg>
+</button>
+
+<script>
+  function applyTheme(theme: 'dark' | 'light') {
+    const root = document.documentElement;
+    root.classList.toggle('dark', theme === 'dark');
+    root.classList.toggle('light', theme === 'light');
+    const dark = document.querySelectorAll<HTMLElement>('[data-icon-dark]');
+    const light = document.querySelectorAll<HTMLElement>('[data-icon-light]');
+    dark.forEach((el) => el.classList.toggle('hidden', theme === 'light'));
+    light.forEach((el) => el.classList.toggle('hidden', theme === 'dark'));
+  }
+
+  const saved = (localStorage.getItem('gitm-theme') as 'dark' | 'light' | null) ?? 'dark';
+  applyTheme(saved);
+
+  document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const current = document.documentElement.classList.contains('light') ? 'light' : 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      try { localStorage.setItem('gitm-theme', next); } catch {}
+    });
+  });
+</script>

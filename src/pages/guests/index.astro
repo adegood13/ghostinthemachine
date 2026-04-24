@@ -1,0 +1,54 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import GuestCard from '@/components/GuestCard.astro';
+import { guests } from '@/config/guests';
+import { loadFeed } from '@/lib/rss';
+
+const feed = await loadFeed();
+const sorted = [...guests].sort((a, b) => a.name.localeCompare(b.name));
+
+function latestEpisodeFor(name: string): string | null {
+  const match = feed.episodes.find((e) => e.guest === name);
+  if (!match) return null;
+  return match.episodeNumber != null ? `Episode ${match.episodeNumber}` : 'Featured episode';
+}
+---
+
+<BaseLayout
+  title="Guests"
+  description="Every guest who has joined Andrew and Liz on Ghost in the Machine."
+>
+  <section class="container-site pt-16 md:pt-24 pb-8">
+    <span class="eyebrow">Guests</span>
+    <h1 class="mt-4 text-display-lg uppercase text-balance">
+      The people who have come on the show.
+    </h1>
+    <p class="mt-6 max-w-prose text-lg text-circuit-silver leading-relaxed">
+      Builders, operators, researchers, and practitioners. One thing we ask every guest: tell us the part you would not put in a press release.
+    </p>
+  </section>
+
+  <section class="container-site py-8">
+    {sorted.length === 0 ? (
+      <p class="text-circuit-silver">Guest directory is being built. Check back soon.</p>
+    ) : (
+      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {sorted.map((g) => (
+          <li><GuestCard guest={g} episodeLabel={latestEpisodeFor(g.name)} /></li>
+        ))}
+      </ul>
+    )}
+  </section>
+
+  <section class="container-site py-12">
+    <div class="card p-8 md:p-10">
+      <h2 class="font-display font-extrabold tracking-tight text-2xl">Know someone we should talk to?</h2>
+      <p class="mt-3 text-circuit-silver max-w-prose">
+        We take submissions seriously. If someone in your orbit is doing interesting work with or against AI, we want to hear about them.
+      </p>
+      <div class="mt-6">
+        <a href="/submit" class="btn-primary">Submit a guest</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
