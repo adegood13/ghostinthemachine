@@ -31,35 +31,33 @@ const podcastSchema = {
   schema={podcastSchema}
 >
   <!-- HERO -->
-  <section class="relative overflow-hidden">
-    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-      <div class="absolute -top-20 -left-20 h-80 w-80 bg-static-teal/5 blur-3xl rounded-full"></div>
-      <div class="absolute -bottom-20 -right-10 h-96 w-96 bg-static-teal/5 blur-3xl rounded-full"></div>
+  <section class="relative w-full overflow-hidden min-h-[640px] md:min-h-[78vh]">
+    <div class="absolute inset-0" aria-hidden="true">
+      <img
+        src="/images/banner.jpg"
+        alt=""
+        class="absolute inset-0 h-full w-full object-cover object-center"
+        fetchpriority="high"
+      />
+      <!-- Dark gradient overlays preserve image presence while keeping
+           text legible in both modes. Stronger on the bottom-left where
+           the headline and CTAs live. -->
+      <div class="absolute inset-0 bg-gradient-to-r from-signal-black/85 via-signal-black/45 to-signal-black/30"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-signal-black via-signal-black/20 to-transparent"></div>
     </div>
-    <div class="container-site pt-16 md:pt-24 pb-12 md:pb-20 relative">
-      <div class="grid gap-10 md:grid-cols-[1.3fr_1fr] md:gap-16 items-center">
-        <div>
-          <span class="eyebrow">A weekly podcast on AI</span>
-          <h1 class="mt-4 text-display-xl uppercase text-balance">
-            {siteConfig.tagline}
-          </h1>
-          <p class="mt-6 max-w-xl text-lg text-circuit-silver leading-relaxed">
-            Andrew DeGood and Liz Short, one optimist and one skeptic, talk honestly about what AI is doing to work, thought, and the humans in the loop. New episode every {siteConfig.schedule.liveDay}.
-          </p>
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a class="btn-primary" href="/listen">Listen now</a>
-            <a class="btn-ghost" href="/watch">Watch live</a>
-          </div>
-        </div>
-        <div class="relative">
-          <div class="aspect-square border border-ghost-white/10 bg-signal-black overflow-hidden max-w-md mx-auto">
-            <img
-              src={feed.artwork}
-              alt={`${siteConfig.name} cover art`}
-              class="h-full w-full object-cover"
-              fetchpriority="high"
-            />
-          </div>
+
+    <div class="container-site relative flex min-h-[640px] md:min-h-[78vh] items-end pt-24 md:pt-32 pb-16 md:pb-24">
+      <div class="max-w-2xl">
+        <span class="eyebrow">A weekly podcast on AI</span>
+        <h1 class="mt-4 text-display-xl uppercase text-balance text-ghost-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.6)]">
+          {siteConfig.tagline}
+        </h1>
+        <p class="mt-6 max-w-xl text-lg text-ghost-white/90 leading-relaxed">
+          Andrew DeGood and Liz Short, one optimist and one skeptic, talk honestly about what AI is doing to work, thought, and the humans in the loop. New episode every {siteConfig.schedule.liveDay}.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="btn-primary" href="/listen">Listen now</a>
+          <a class="btn-ghost" href="/watch">Watch live</a>
         </div>
       </div>
     </div>
