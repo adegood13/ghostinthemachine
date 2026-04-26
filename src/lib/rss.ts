@@ -316,7 +316,7 @@ export function placeholderFeed(): PodcastFeed {
       episodeNumber: e.number,
       seasonNumber: 1,
       season: pubDate.getFullYear(),
-      artwork: '/images/cover-art.svg',
+      artwork: '/images/cover-art.jpg',
       audioUrl: '',
       guid: `placeholder-${i}`,
       guest: e.guest,
@@ -330,7 +330,7 @@ export function placeholderFeed(): PodcastFeed {
   return {
     title: 'Ghost in the Machine',
     description: 'A weekly philosophical podcast about AI. One optimist, one skeptic, no hype.',
-    artwork: '/images/cover-art.svg',
+    artwork: '/images/cover-art.jpg',
     link: 'https://ghostinthemachine.studio',
     feedUrl: '',
     author: 'Andrew DeGood and Liz Short',

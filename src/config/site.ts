@@ -15,7 +15,7 @@ export const siteConfig = {
         'Andrew is the founder of AskBobAI and the optimist on the show. He believes the interesting work is figuring out how AI makes people better at the jobs they already do.',
       bioLong:
         'Andrew DeGood is the founder of AskBobAI, where he builds AI tools for small businesses that have been priced out of enterprise software. He spends his weeks talking to operators about what actually works and what is marketing. On the show, he plays the AI optimist, not because he thinks every tool ships, but because he thinks the downside of refusing to engage is worse than the downside of trying and failing.',
-      image: '/images/hosts/andrew.svg',
+      image: '/images/hosts/andrew.jpg',
       links: {
         linkedin: 'https://www.linkedin.com/in/andrewdegood',
         website: 'https://askbob.ai',
@@ -29,7 +29,7 @@ export const siteConfig = {
         'Liz is the CEO of Short Solutions and the skeptic on the show. She is not anti-AI. She is anti-everyone-pretending-this-is-fine.',
       bioLong:
         'Liz Short is the CEO of Short Solutions, a consultancy that helps mid-market companies actually ship the operational changes they keep trying to ship. She has spent the last decade watching enterprise software promise transformation and deliver slightly faster spreadsheets. On the show, she is the resident skeptic, not because she hates the technology, but because she thinks the people selling it are several steps ahead of the people buying it.',
-      image: '/images/hosts/liz.svg',
+      image: '/images/hosts/liz.jpg',
       links: {
         linkedin: 'https://www.linkedin.com/in/lizshort',
         website: 'https://shortsolutions.co',
@@ -64,12 +64,13 @@ export const siteConfig = {
     { name: 'Amazon Music', url: 'https://music.amazon.com/podcasts/REPLACE_ME', icon: 'amazon' },
     { name: 'Overcast', url: 'https://overcast.fm/itunes-REPLACE_ME', icon: 'overcast' },
     { name: 'Pocket Casts', url: 'https://pca.st/REPLACE_ME', icon: 'pocketcasts' },
-    { name: 'YouTube', url: 'https://www.youtube.com/@ghostinthemachine', icon: 'youtube' },
+    { name: 'YouTube', url: 'https://www.youtube.com/@Ghostinthemachine-c5v', icon: 'youtube' },
     { name: 'RSS Feed', url: '/feed.xml', icon: 'rss' },
   ],
   social: {
-    youtube: 'https://www.youtube.com/@ghostinthemachine',
-    linkedin: 'https://www.linkedin.com/company/ghostinthemachine',
+    youtube: 'https://www.youtube.com/@Ghostinthemachine-c5v',
+    linkedin: 'https://www.linkedin.com/company/ghose-in-the-machine/',
+    instagram: 'https://www.instagram.com/ghostinthemachinepodcast/',
     email: 'hello@ghostinthemachine.studio',
   },
   newsletter: {
