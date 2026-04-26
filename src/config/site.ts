@@ -31,7 +31,7 @@ export const siteConfig = {
         'Liz Short is the CEO of Short Solutions, a consultancy that helps mid-market companies actually ship the operational changes they keep trying to ship. She has spent the last decade watching enterprise software promise transformation and deliver slightly faster spreadsheets. On the show, she is the resident skeptic, not because she hates the technology, but because she thinks the people selling it are several steps ahead of the people buying it.',
       image: '/images/hosts/liz.jpg',
       links: {
-        linkedin: 'https://www.linkedin.com/in/lizshort',
+        linkedin: 'https://www.linkedin.com/in/thelizshort/',
         website: 'https://shortsolutions.co',
       },
     },
