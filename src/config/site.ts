@@ -32,7 +32,7 @@ export const siteConfig = {
       image: '/images/hosts/liz.jpg',
       links: {
         linkedin: 'https://www.linkedin.com/in/thelizshort/',
-        website: 'https://shortsolutions.co',
+        website: 'https://www.theshortsolution.com/',
       },
     },
   ],
