@@ -18,7 +18,7 @@ export const siteConfig = {
       image: '/images/hosts/andrew.jpg',
       links: {
         linkedin: 'https://www.linkedin.com/in/andrewdegood',
-        website: 'https://askbob.ai',
+        website: 'https://www.askbobai.com',
       },
     },
     {
