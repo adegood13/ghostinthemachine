@@ -62,6 +62,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           <input type="text" name="guest_company" required class="w-full bg-transparent border border-ghost-white/30 px-4 py-3 placeholder:text-circuit-silver focus:border-static-teal focus:outline-none" />
         </label>
         <label class="block">
+          <span class="block mb-2 text-sm font-medium">Guest email</span>
+          <input type="email" name="guest_email" placeholder="hello@example.com" class="w-full bg-transparent border border-ghost-white/30 px-4 py-3 placeholder:text-circuit-silver focus:border-static-teal focus:outline-none" />
+          <span class="mt-1 block text-xs text-circuit-silver">Optional. Helps us reach out faster if we want to book them.</span>
+        </label>
+        <label class="block">
           <span class="block mb-2 text-sm font-medium">Why this guest, why now <span class="text-static-teal">*</span></span>
           <textarea
             name="why"
