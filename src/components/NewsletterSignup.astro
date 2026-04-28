@@ -1,7 +1,13 @@
 ---
 import { siteConfig } from '@/config/site';
 
-const beehiivUrl = import.meta.env.PUBLIC_BEEHIIV_EMBED_URL;
+// Hardcoded default so the production build works without an env var.
+// PUBLIC_BEEHIIV_EMBED_URL still overrides if set, useful for previews.
+const DEFAULT_BEEHIIV_EMBED_URL =
+  'https://subscribe-forms.beehiiv.com/72a8cb03-0e3b-4404-ad16-11db225eb70b';
+
+const beehiivUrl =
+  import.meta.env.PUBLIC_BEEHIIV_EMBED_URL || DEFAULT_BEEHIIV_EMBED_URL;
 ---
 
 <section class="card p-8 md:p-10">
@@ -16,36 +22,19 @@ const beehiivUrl = import.meta.env.PUBLIC_BEEHIIV_EMBED_URL;
       </p>
     </div>
     <div>
-      {beehiivUrl ? (
-        <iframe
-          src={beehiivUrl}
-          class="w-full min-h-[200px] bg-transparent"
-          style="border: 0;"
-          title="Newsletter signup"
-          loading="lazy"
-        ></iframe>
-      ) : (
-        <form
-          class="space-y-3"
-          action="#"
-          data-beehiiv-placeholder
-          aria-describedby="beehiiv-note"
-        >
-          <label class="block">
-            <span class="sr-only">Email address</span>
-            <input
-              type="email"
-              required
-              placeholder="you@domain.com"
-              class="w-full bg-transparent border border-ghost-white/30 px-4 py-3 text-base placeholder:text-circuit-silver focus:border-static-teal focus:outline-none"
-            />
-          </label>
-          <button type="submit" class="btn-primary w-full">Subscribe</button>
-          <p id="beehiiv-note" class="text-xs text-circuit-silver">
-            Set <code class="text-ghost-white">PUBLIC_BEEHIIV_EMBED_URL</code> to replace this placeholder with the live Beehiiv form.
-          </p>
-        </form>
-      )}
+      <iframe
+        src={beehiivUrl}
+        class="beehiiv-embed w-full bg-transparent"
+        style="border: 0; min-height: 360px;"
+        title="Newsletter signup"
+        loading="lazy"
+        scrolling="no"
+        data-test-id="beehiiv-embed"
+      ></iframe>
+      <!-- Beehiiv ships an auto-resize script that adjusts the iframe height
+           to its content. Loading it makes the form fit cleanly without a
+           hardcoded height. -->
+      <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
     </div>
   </div>
 </section>
