@@ -16,9 +16,14 @@ export const liveConfig = {
   // ISO 8601 string for the next scheduled episode. Update when a show
   // is booked; the home page and Watch page use it to render the
   // "Next episode" card when not live.
-  nextEpisodeDate: '2026-05-01T16:00:00Z',
-  nextEpisodeTopic: 'The economics of an AI agent that never clocks out',
+  // 2026-05-14 12:00 EDT = 16:00 UTC. Premiere episode.
+  nextEpisodeDate: '2026-05-14T16:00:00Z',
+  nextEpisodeTopic:
+    'Premiere. Andrew and Liz on why we built this show, why it matters, and why now.',
   nextEpisodeGuest: '',
+  // Optional eyebrow override. When set, the LiveIndicator uses this in
+  // place of "Next episode" so we can call out the premiere or a special.
+  nextEpisodeEyebrow: 'Premiere',
 } as const;
 
 export type LiveConfig = typeof liveConfig;
