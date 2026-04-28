@@ -1,39 +1,43 @@
 ---
 import { siteConfig } from '@/config/site';
 
-// Hardcoded default so the production build works without an env var.
-// PUBLIC_BEEHIIV_EMBED_URL still overrides if set, useful for previews.
-const DEFAULT_BEEHIIV_EMBED_URL =
+// Beehiiv hosts the subscribe form on their own domain. Linking out keeps
+// the styling on-brand (no iframe sticker glued onto a dark card) and gives
+// Beehiiv room to do their own A/B testing on the form itself.
+//
+// Override via PUBLIC_BEEHIIV_SUBSCRIBE_URL if a different subscribe page
+// (e.g. a custom Beehiiv landing page) needs to be used instead.
+const DEFAULT_BEEHIIV_SUBSCRIBE_URL =
   'https://subscribe-forms.beehiiv.com/72a8cb03-0e3b-4404-ad16-11db225eb70b';
 
-const beehiivUrl =
-  import.meta.env.PUBLIC_BEEHIIV_EMBED_URL || DEFAULT_BEEHIIV_EMBED_URL;
+const subscribeUrl =
+  import.meta.env.PUBLIC_BEEHIIV_SUBSCRIBE_URL || DEFAULT_BEEHIIV_SUBSCRIBE_URL;
 ---
 
-<section class="card overflow-hidden">
-  <div class="px-6 pt-8 pb-6 md:px-10 md:pt-10 md:pb-8 max-w-3xl">
-    <span class="eyebrow">Newsletter</span>
-    <h2 class="mt-2 font-display font-extrabold tracking-tight text-2xl md:text-3xl text-balance">
-      {siteConfig.newsletter.heading}
-    </h2>
-    <p class="mt-3 max-w-prose text-circuit-silver leading-relaxed">
-      {siteConfig.newsletter.blurb}
-    </p>
-  </div>
-
-  <div class="px-2 md:px-4 pb-2 md:pb-4">
-    <iframe
-      src={beehiivUrl}
-      class="beehiiv-embed block w-full bg-transparent"
-      style="border: 0; min-height: 320px;"
-      title="Newsletter signup"
-      loading="lazy"
-      scrolling="no"
-      data-test-id="beehiiv-embed"
-    ></iframe>
-    <!-- Beehiiv's embed.js auto-resizes the iframe to its content height,
-         which removes the gap or scrollbar that the static min-height
-         would otherwise leave behind. -->
-    <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
+<section class="card p-8 md:p-12">
+  <div class="grid gap-8 md:grid-cols-[1.4fr_1fr] md:gap-12 items-center">
+    <div>
+      <span class="eyebrow">Newsletter</span>
+      <h2 class="mt-2 font-display font-extrabold tracking-tight text-2xl md:text-3xl text-balance">
+        {siteConfig.newsletter.heading}
+      </h2>
+      <p class="mt-3 max-w-prose text-circuit-silver leading-relaxed">
+        {siteConfig.newsletter.blurb}
+      </p>
+    </div>
+    <div class="md:text-right">
+      <a
+        href={subscribeUrl}
+        target="_blank"
+        rel="noopener"
+        class="btn-primary inline-flex"
+      >
+        Subscribe
+        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="square" d="M7 17L17 7M9 7h8v8" />
+        </svg>
+      </a>
+      <p class="mt-3 text-xs text-circuit-silver">Opens in a new tab. Powered by Beehiiv.</p>
+    </div>
   </div>
 </section>
