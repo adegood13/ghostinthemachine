@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { loadFeed } from '@/lib/rss';
+import { loadFeed, DEFAULT_PODCAST_RSS_URL } from '@/lib/rss';
 import { siteConfig } from '@/config/site';
 
 // Re-expose the Transistor RSS feed at /feed.xml so the canonical feed URL
@@ -7,7 +7,7 @@ import { siteConfig } from '@/config/site';
 // return it verbatim (to preserve signed tracking URLs and enclosures).
 // Otherwise we synthesize a minimal feed from the parsed data.
 export const GET: APIRoute = async () => {
-  const upstreamUrl = import.meta.env.PUBLIC_PODCAST_RSS_URL;
+  const upstreamUrl = import.meta.env.PUBLIC_PODCAST_RSS_URL || DEFAULT_PODCAST_RSS_URL;
 
   if (upstreamUrl) {
     try {

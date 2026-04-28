@@ -339,10 +339,15 @@ export function placeholderFeed(): PodcastFeed {
 }
 
 export async function loadFeed(): Promise<PodcastFeed> {
-  const url = import.meta.env.PUBLIC_PODCAST_RSS_URL;
+  const url = import.meta.env.PUBLIC_PODCAST_RSS_URL || DEFAULT_PODCAST_RSS_URL;
   if (!url) {
-    console.warn('[rss] PUBLIC_PODCAST_RSS_URL not set, using placeholder feed.');
+    console.warn('[rss] No feed URL configured, using placeholder feed.');
     return placeholderFeed();
   }
   return fetchFeed(url);
 }
+
+// Hardcoded default so the production build works without anyone having
+// to remember to set the env var. The env var still wins if it is set,
+// so you can point a preview deploy at a different feed if needed.
+export const DEFAULT_PODCAST_RSS_URL = 'https://feeds.transistor.fm/ghost-in-the-machine';
