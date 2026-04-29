@@ -62,7 +62,7 @@ export const siteConfig = {
     { name: 'Apple Podcasts', url: 'https://podcasts.apple.com/podcast/ghost-in-the-machine/id1895842333', icon: 'apple' },
     { name: 'Spotify', url: 'https://open.spotify.com/show/3c9xJP3YiUO3v2tqSzTTMZ', icon: 'spotify' },
     { name: 'Amazon Music', url: 'https://music.amazon.com/podcasts/REPLACE_ME', icon: 'amazon' },
-    { name: 'Overcast', url: 'https://overcast.fm/itunes-REPLACE_ME', icon: 'overcast' },
+    { name: 'Podcast Addict', url: 'https://podcastaddict.com/podcast/ghost-in-the-machine/6967261', icon: 'podcastaddict' },
     { name: 'Pocket Casts', url: 'https://pca.st/itunes/1895842333', icon: 'pocketcasts' },
     { name: 'YouTube', url: 'https://www.youtube.com/@Ghostinthemachine-c5v', icon: 'youtube' },
     { name: 'RSS Feed', url: '/feed.xml', icon: 'rss' },
