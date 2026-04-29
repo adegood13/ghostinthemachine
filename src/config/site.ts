@@ -59,8 +59,8 @@ export const siteConfig = {
     liveTime: '12:00 PM ET',
   },
   platforms: [
-    { name: 'Apple Podcasts', url: 'https://podcasts.apple.com/', icon: 'apple' },
-    { name: 'Spotify', url: 'https://open.spotify.com/show/REPLACE_ME', icon: 'spotify' },
+    { name: 'Apple Podcasts', url: 'https://podcasts.apple.com/podcast/ghost-in-the-machine/id1895842333', icon: 'apple' },
+    { name: 'Spotify', url: 'https://open.spotify.com/show/3c9xJP3YiUO3v2tqSzTTMZ', icon: 'spotify' },
     { name: 'Amazon Music', url: 'https://music.amazon.com/podcasts/REPLACE_ME', icon: 'amazon' },
     { name: 'Overcast', url: 'https://overcast.fm/itunes-REPLACE_ME', icon: 'overcast' },
     { name: 'Pocket Casts', url: 'https://pca.st/REPLACE_ME', icon: 'pocketcasts' },
