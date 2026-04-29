@@ -63,7 +63,7 @@ export const siteConfig = {
     { name: 'Spotify', url: 'https://open.spotify.com/show/3c9xJP3YiUO3v2tqSzTTMZ', icon: 'spotify' },
     { name: 'Amazon Music', url: 'https://music.amazon.com/podcasts/REPLACE_ME', icon: 'amazon' },
     { name: 'Overcast', url: 'https://overcast.fm/itunes-REPLACE_ME', icon: 'overcast' },
-    { name: 'Pocket Casts', url: 'https://pca.st/REPLACE_ME', icon: 'pocketcasts' },
+    { name: 'Pocket Casts', url: 'https://pca.st/itunes/1895842333', icon: 'pocketcasts' },
     { name: 'YouTube', url: 'https://www.youtube.com/@Ghostinthemachine-c5v', icon: 'youtube' },
     { name: 'RSS Feed', url: '/feed.xml', icon: 'rss' },
   ],
