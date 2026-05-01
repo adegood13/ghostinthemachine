@@ -148,20 +148,15 @@
     animation: haze 9s ease-in-out infinite;
   }
 
-  /* Floating ghost silhouettes that drift across the hero. */
-  .ghost-drift {
-    position: absolute;
+  /* Echo layer over the hero banner. Blended with the base copy so only
+     the brighter parts (the ghost figures and logo) appear to drift,
+     creating an afterimage / haunting effect on the existing artwork. */
+  .ghost-echo {
+    mix-blend-mode: lighten;
+    opacity: 0.55;
     pointer-events: none;
-    fill: rgba(245, 245, 245, 0.14);
-    filter: blur(0.5px);
-    will-change: transform;
-    animation-name: ghost-float;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-  }
-
-  .ghost-drift--bob {
-    animation-name: ghost-float-bob;
+    will-change: transform, filter;
+    animation: ghost-echo 5.5s ease-in-out infinite;
   }
 }
 
@@ -176,33 +171,20 @@
   50%      { opacity: 1; }
 }
 
-/* Drift left to right across the hero. Start fully off-screen left,
-   exit fully off-screen right. */
-@keyframes ghost-float {
-  0%   { transform: translate3d(-15vw, 0, 0); opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { transform: translate3d(115vw, 0, 0); opacity: 0; }
-}
-
-/* Same drift but with a gentle vertical bob for variety. */
-@keyframes ghost-float-bob {
-  0%   { transform: translate3d(-15vw, 0, 0); opacity: 0; }
-  10%  { opacity: 1; }
-  25%  { transform: translate3d(15vw, -14px, 0); opacity: 1; }
-  50%  { transform: translate3d(50vw, 6px, 0); opacity: 1; }
-  75%  { transform: translate3d(85vw, -10px, 0); opacity: 1; }
-  90%  { opacity: 1; }
-  100% { transform: translate3d(115vw, 0, 0); opacity: 0; }
+/* Slow back-and-forth offset on the echo layer. Combined with mix-blend
+   the bright parts of the banner (ghost figures, logo) appear to drift
+   off their position and back, like an afterimage that won't settle. */
+@keyframes ghost-echo {
+  0%   { transform: translate3d(-3px, 1px, 0) scale(1.005); opacity: 0.45; }
+  50%  { transform: translate3d(4px, -2px, 0) scale(1.012); opacity: 0.65; }
+  100% { transform: translate3d(-3px, 1px, 0) scale(1.005); opacity: 0.45; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-ken-burns,
   .animate-haze,
-  .ghost-drift {
+  .ghost-echo {
     animation: none;
   }
-  .ghost-drift {
-    opacity: 0; /* hide entirely if motion is reduced */
-  }
+  .ghost-echo { display: none; }
 }

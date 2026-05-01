@@ -39,27 +39,22 @@ const podcastSchema = {
         class="animate-ken-burns absolute inset-0 h-full w-full object-cover object-center"
         fetchpriority="high"
       />
+      <!-- Echo layer. Same banner, blended with `lighten` so only the
+           brighter parts of the image (the ghost figures, the logo)
+           layer over the base. A slow back-and-forth offset makes those
+           bright parts appear to vibrate in place, like a ghosting
+           afterimage. The dark background is unchanged. -->
+      <img
+        src="/images/banner.jpg"
+        alt=""
+        class="ghost-echo absolute inset-0 h-full w-full object-cover object-center"
+      />
+
       <!-- Dark gradient overlays preserve image presence while keeping
            text legible in both modes. Stronger on the bottom-left where
            the headline and CTAs live. -->
       <div class="animate-haze absolute inset-0 bg-gradient-to-r from-signal-black/85 via-signal-black/45 to-signal-black/30"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-signal-black via-signal-black/20 to-transparent"></div>
-
-      <!-- Floating ghost silhouettes drifting across the hero. Translucent
-           so they layer atmospherically over the banner without competing
-           with the headline. -->
-      <svg class="ghost-drift ghost-drift--bob" style="top: 18%; width: 56px; height: 64px; animation-duration: 38s; animation-delay: -4s;" viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg">
-        <path d="M30 4 C16 4 9 17 9 31 L9 62 L14 58 L19 62 L24 58 L30 62 L36 58 L41 62 L46 58 L51 62 L51 31 C51 17 44 4 30 4 Z" />
-      </svg>
-      <svg class="ghost-drift" style="top: 56%; width: 38px; height: 44px; animation-duration: 26s; animation-delay: -16s;" viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg">
-        <path d="M30 4 C16 4 9 17 9 31 L9 62 L14 58 L19 62 L24 58 L30 62 L36 58 L41 62 L46 58 L51 62 L51 31 C51 17 44 4 30 4 Z" />
-      </svg>
-      <svg class="ghost-drift ghost-drift--bob" style="top: 72%; width: 72px; height: 84px; animation-duration: 46s; animation-delay: -28s;" viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg">
-        <path d="M30 4 C16 4 9 17 9 31 L9 62 L14 58 L19 62 L24 58 L30 62 L36 58 L41 62 L46 58 L51 62 L51 31 C51 17 44 4 30 4 Z" />
-      </svg>
-      <svg class="ghost-drift" style="top: 38%; width: 32px; height: 38px; animation-duration: 30s; animation-delay: -10s;" viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg">
-        <path d="M30 4 C16 4 9 17 9 31 L9 62 L14 58 L19 62 L24 58 L30 62 L36 58 L41 62 L46 58 L51 62 L51 31 C51 17 44 4 30 4 Z" />
-      </svg>
     </div>
 
     <div class="container-site relative flex min-h-[640px] md:min-h-[78vh] items-end pt-24 md:pt-32 pb-16 md:pb-24">
