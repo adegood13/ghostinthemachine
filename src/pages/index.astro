@@ -36,24 +36,13 @@ const podcastSchema = {
       <img
         src="/images/banner.jpg"
         alt=""
-        class="animate-ken-burns absolute inset-0 h-full w-full object-cover object-center"
+        class="absolute inset-0 h-full w-full object-cover object-center"
         fetchpriority="high"
       />
-      <!-- Echo layer. Same banner, blended with `lighten` so only the
-           brighter parts of the image (the ghost figures, the logo)
-           layer over the base. A slow back-and-forth offset makes those
-           bright parts appear to vibrate in place, like a ghosting
-           afterimage. The dark background is unchanged. -->
-      <img
-        src="/images/banner.jpg"
-        alt=""
-        class="ghost-echo absolute inset-0 h-full w-full object-cover object-center"
-      />
-
       <!-- Dark gradient overlays preserve image presence while keeping
            text legible in both modes. Stronger on the bottom-left where
            the headline and CTAs live. -->
-      <div class="animate-haze absolute inset-0 bg-gradient-to-r from-signal-black/85 via-signal-black/45 to-signal-black/30"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-signal-black/85 via-signal-black/45 to-signal-black/30"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-signal-black via-signal-black/20 to-transparent"></div>
     </div>
 
