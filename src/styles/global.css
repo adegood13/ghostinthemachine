@@ -134,4 +134,35 @@
 @layer utilities {
   .text-balance { text-wrap: balance; }
   .text-pretty { text-wrap: pretty; }
+
+  /* Slow cinematic motion on the hero banner. Scale + drift gives the
+     impression of life without distracting from the headline. */
+  .animate-ken-burns {
+    animation: ken-burns 32s ease-in-out infinite alternate;
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  /* Soft atmospheric pulse on the overlay gradient. */
+  .animate-haze {
+    animation: haze 9s ease-in-out infinite;
+  }
+}
+
+@keyframes ken-burns {
+  0%   { transform: scale(1.02) translate3d(0, 0, 0); }
+  50%  { transform: scale(1.07) translate3d(-1.5%, -0.8%, 0); }
+  100% { transform: scale(1.04) translate3d(1%, 0.6%, 0); }
+}
+
+@keyframes haze {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ken-burns,
+  .animate-haze {
+    animation: none;
+  }
 }
