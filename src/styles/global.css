@@ -147,6 +147,22 @@
   .animate-haze {
     animation: haze 9s ease-in-out infinite;
   }
+
+  /* Floating ghost silhouettes that drift across the hero. */
+  .ghost-drift {
+    position: absolute;
+    pointer-events: none;
+    fill: rgba(245, 245, 245, 0.14);
+    filter: blur(0.5px);
+    will-change: transform;
+    animation-name: ghost-float;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  .ghost-drift--bob {
+    animation-name: ghost-float-bob;
+  }
 }
 
 @keyframes ken-burns {
@@ -160,9 +176,33 @@
   50%      { opacity: 1; }
 }
 
+/* Drift left to right across the hero. Start fully off-screen left,
+   exit fully off-screen right. */
+@keyframes ghost-float {
+  0%   { transform: translate3d(-15vw, 0, 0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translate3d(115vw, 0, 0); opacity: 0; }
+}
+
+/* Same drift but with a gentle vertical bob for variety. */
+@keyframes ghost-float-bob {
+  0%   { transform: translate3d(-15vw, 0, 0); opacity: 0; }
+  10%  { opacity: 1; }
+  25%  { transform: translate3d(15vw, -14px, 0); opacity: 1; }
+  50%  { transform: translate3d(50vw, 6px, 0); opacity: 1; }
+  75%  { transform: translate3d(85vw, -10px, 0); opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translate3d(115vw, 0, 0); opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-ken-burns,
-  .animate-haze {
+  .animate-haze,
+  .ghost-drift {
     animation: none;
+  }
+  .ghost-drift {
+    opacity: 0; /* hide entirely if motion is reduced */
   }
 }
