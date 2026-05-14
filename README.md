@@ -1,6 +1,6 @@
 # Ghost in the Machine
 
-The public website for **Ghost in the Machine**, a weekly philosophical podcast about AI hosted by Andrew DeGood and Liz Short. Live on YouTube and LinkedIn every Thursday, published as a podcast on every major platform.
+The public website for **Ghost in the Machine**, a weekly philosophical podcast about AI hosted by Andrew DeGood and Liz Short. Audio drops on every major podcast platform, with the video cut on YouTube the same day.
 
 **Production domain:** [ghostinthemachine.studio](https://ghostinthemachine.studio)
 
@@ -12,7 +12,7 @@ A static Astro site that:
 
 - Renders the show's brand identity in dark mode first, with a light mode toggle.
 - Parses the Transistor RSS feed at build time and generates a page per episode.
-- Embeds the YouTube Live stream when the show is live, or a "next episode" card when it is not.
+- Surfaces the next scheduled episode in a "Next episode" or "Premiere" card on the home page.
 - Accepts guest submissions and contact messages via Netlify Forms (no third-party form service).
 - Captures newsletter signups via an embedded Beehiiv form.
 - Ships JSON-LD structured data (`PodcastSeries` and `PodcastEpisode`), per-page Open Graph tags, a sitemap, and a proxy RSS feed at `/feed.xml`.
@@ -55,8 +55,6 @@ All env vars live in `.env.example`. Copy to `.env` for local work and set them 
 | `PUBLIC_BEEHIIV_EMBED_URL` | Beehiiv inline embed URL for newsletter signup. Grab it from Beehiiv → Settings → Embed. Blank shows a placeholder form with a visible note. |
 | `PUBLIC_YOUTUBE_CHANNEL_URL` | Channel link used on the Watch page. |
 | `PUBLIC_LINKEDIN_URL` | LinkedIn page link used on the Watch page. |
-| `PUBLIC_LIVE_YOUTUBE_VIDEO_ID` | Optional override for the "currently live" YouTube video ID. When set, the home page and Watch page render the live embed. Leaving it blank falls back to `src/config/live.ts`. |
-
 The `PUBLIC_` prefix is required by Astro to expose the value to the client bundle. None of these values are secrets.
 
 ---
@@ -81,23 +79,12 @@ Episodes are pulled from the Transistor RSS feed at build time. You do not edit 
 
 **Option C: Manual.** Click **Trigger deploy → Deploy site** in Netlify.
 
-### Going live (when a show is about to start streaming)
+### Updating the upcoming episode card
 
-Live detection is manual for v1. Two options:
+The "Next episode" or "Premiere" card on the home page and Episodes page is driven by `src/config/live.ts`:
 
-**Quick toggle via env var (no code change required):**
-
-1. In Netlify → **Environment variables**, set `PUBLIC_LIVE_YOUTUBE_VIDEO_ID` to the live YouTube video ID.
-2. Trigger a deploy. The home page and Watch page render the live embed.
-3. When the stream ends, clear the env var and redeploy.
-
-**Committed toggle:**
-
-1. Edit `src/config/live.ts`. Set `isLive: true` and `youtubeVideoId: '<id>'`.
-2. Update `nextEpisodeDate` and `nextEpisodeTopic` for the next show.
-3. Commit, push. Netlify redeploys automatically.
-
-A future enhancement could query the YouTube Data API to flip this on automatically. Not in v1.
+1. Edit `nextEpisodeDate` (ISO 8601 UTC string), `nextEpisodeTopic`, and optionally `nextEpisodeEyebrow` (e.g. "Premiere", "Special").
+2. Commit and push. Netlify redeploys automatically.
 
 ### Updating host bios, the palette, or platform links (for non-developers)
 
@@ -106,7 +93,7 @@ The content that people most commonly want to update is centralized in a few sma
 - **Host bios and roles** → `src/config/site.ts`, the `hosts` array.
 - **Show tagline and description** → `src/config/site.ts`, `tagline` and `description`.
 - **Podcast platform links** → `src/config/site.ts`, the `platforms` array. URLs marked `REPLACE_ME` need real URLs after Apple/Spotify/Amazon approve the feed.
-- **Live schedule copy** → `src/config/site.ts`, the `schedule` object.
+- **Release schedule copy** → `src/config/site.ts`, the `schedule` object.
 - **Editorial principles on the About page** → `src/config/site.ts`, `editorialPrinciples`.
 - **Guest directory** → `src/config/guests.ts`. Append a new entry per guest.
 - **Social links and contact email** → `src/config/site.ts`, `social`.
@@ -212,7 +199,7 @@ Documented so nobody accidentally invents them later:
 - No comments on episodes.
 - No paid subscriptions or member-only content.
 - No CMS. The only content store is the RSS feed (for episodes) and markdown-or-TS files in the repo (for static content like host bios).
-- No automated YouTube Live detection. Manual toggle for now.
+- No live streaming. The show records and publishes; the video cut goes on YouTube alongside the audio drop.
 - No multi-language support.
 
 ---
