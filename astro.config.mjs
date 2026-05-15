@@ -7,7 +7,11 @@ export default defineConfig({
   site: 'https://ghostinthemachine.studio',
   integrations: [
     tailwind({ applyBaseStyles: false }),
-    sitemap(),
+    // The guest booking page is private. Keep it out of the sitemap so
+    // search engines never discover it (it is also noindex'd).
+    sitemap({
+      filter: (page) => !page.includes('/guest-booking'),
+    }),
     preact(),
   ],
   build: {

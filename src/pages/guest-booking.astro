@@ -1,0 +1,129 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { bookingUrl, bookingPasswordHash, bookingIntro } from '@/config/booking';
+---
+
+<BaseLayout
+  title="Guest booking"
+  description="Private guest booking page."
+  noindex={true}
+>
+  <section class="container-site pt-16 md:pt-24 pb-16 min-h-[70vh]">
+    <!-- PASSWORD GATE -->
+    <div data-booking-gate>
+      <div class="max-w-md">
+        <span class="eyebrow">Private</span>
+        <h1 class="mt-4 text-display-md uppercase text-balance">Approved guests only.</h1>
+        <p class="mt-4 text-circuit-silver leading-relaxed">
+          This page is for confirmed guests of the show. Enter the access password you were given to see open recording dates.
+        </p>
+        <form class="mt-6 space-y-3" data-booking-form>
+          <label class="block">
+            <span class="sr-only">Access password</span>
+            <input
+              type="password"
+              name="booking-password"
+              required
+              autocomplete="off"
+              placeholder="Access password"
+              class="w-full bg-transparent border border-ghost-white/30 px-4 py-3 text-base placeholder:text-circuit-silver focus:border-static-teal focus:outline-none"
+            />
+          </label>
+          <button type="submit" class="btn-primary w-full">Unlock</button>
+          <p class="text-sm text-red-400 hidden" data-booking-error>
+            That password is not right. Check it and try again.
+          </p>
+        </form>
+        <p class="mt-6 text-xs text-circuit-silver">
+          Not a confirmed guest yet? Suggest yourself or someone else on the
+          <a class="text-static-teal link-hover" href="/submit">guest submission form</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- BOOKING CONTENT (revealed after the gate) -->
+    <div data-booking-content hidden>
+      <div class="max-w-prose">
+        <span class="eyebrow">{bookingIntro.eyebrow}</span>
+        <h1 class="mt-4 text-display-md uppercase text-balance">{bookingIntro.heading}</h1>
+        <p class="mt-4 text-circuit-silver leading-relaxed">{bookingIntro.blurb}</p>
+      </div>
+
+      <div class="mt-10">
+        {bookingUrl ? (
+          <div class="card overflow-hidden">
+            <iframe
+              data-booking-frame
+              data-src={bookingUrl}
+              title="Recording date scheduler"
+              class="w-full"
+              style="border: 0; min-height: 720px;"
+              loading="lazy"
+            ></iframe>
+          </div>
+        ) : (
+          <div class="card p-8 md:p-10">
+            <span class="eyebrow">Setup pending</span>
+            <h2 class="mt-2 font-display font-extrabold tracking-tight text-2xl">
+              The scheduler is not connected yet.
+            </h2>
+            <p class="mt-3 text-circuit-silver max-w-prose">
+              Once the scheduling tool is set up, set the <code class="text-ghost-white">PUBLIC_BOOKING_URL</code> environment variable in Netlify to the booking link. The scheduler will then load here automatically.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script define:vars={{ bookingPasswordHash }}>
+  const gate = document.querySelector('[data-booking-gate]');
+  const content = document.querySelector('[data-booking-content]');
+  const form = document.querySelector('[data-booking-form]');
+  const errorEl = document.querySelector('[data-booking-error]');
+  const frame = document.querySelector('[data-booking-frame]');
+
+  const STORAGE_KEY = 'gitm-booking-unlocked';
+
+  async function sha256(text) {
+    const data = new TextEncoder().encode(text);
+    const digest = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(digest))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
+  function reveal() {
+    if (gate) gate.hidden = true;
+    if (content) content.hidden = false;
+    // Load the scheduler only after unlock so the URL is not in the
+    // initial page markup.
+    if (frame && !frame.src && frame.dataset.src) {
+      frame.src = frame.dataset.src;
+    }
+  }
+
+  // Stay unlocked for the rest of the browser session.
+  try {
+    if (sessionStorage.getItem(STORAGE_KEY) === '1') reveal();
+  } catch (e) {}
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = form.querySelector('input[name="booking-password"]');
+    const value = input ? input.value.trim() : '';
+    const hash = await sha256(value);
+    if (hash === bookingPasswordHash) {
+      try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+      if (errorEl) errorEl.classList.add('hidden');
+      reveal();
+    } else {
+      if (errorEl) errorEl.classList.remove('hidden');
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+    }
+  });
+</script>

@@ -11,6 +11,7 @@ export interface Props {
   ogType?: 'website' | 'article';
   canonical?: string;
   schema?: Record<string, unknown> | null;
+  noindex?: boolean;
 }
 
 const {
@@ -20,6 +21,7 @@ const {
   ogType = 'website',
   canonical,
   schema = null,
+  noindex = false,
 } = Astro.props;
 
 const fullTitle = title ? `${title} · ${siteConfig.name}` : siteConfig.name;
@@ -43,6 +45,8 @@ const gaId = import.meta.env.PUBLIC_GA4_ID;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
+
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title={siteConfig.name} href="/feed.xml" />
