@@ -4,11 +4,14 @@
 // external scheduling tool (Cal.com, Calendly, or similar). It is hidden
 // from the nav, the footer, the sitemap, and search engines.
 
-// The scheduling tool's public booking URL. Works with any tool that can
-// be embedded in an iframe: Cal.com, Calendly, SavvyCal, TidyCal, etc.
-// Set PUBLIC_BOOKING_URL in Netlify to the real link once the tool is set
-// up. Until then the page shows a "not configured yet" notice.
-export const bookingUrl = import.meta.env.PUBLIC_BOOKING_URL ?? '';
+// The scheduling tool's public booking URL. Hardcoded as the default so
+// the page works without an env var; PUBLIC_BOOKING_URL still overrides it
+// (useful for pointing a preview deploy at a test event).
+const DEFAULT_BOOKING_URL =
+  'https://calendly.com/d/cvp7-wmv-zkb/ghost-in-the-machine';
+
+export const bookingUrl =
+  import.meta.env.PUBLIC_BOOKING_URL || DEFAULT_BOOKING_URL;
 
 // SHA-256 hash of the shared access password. The gate hashes whatever the
 // visitor types and compares against this. The plaintext password is never
