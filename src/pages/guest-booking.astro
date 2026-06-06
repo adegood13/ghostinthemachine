@@ -53,8 +53,7 @@ import { bookingUrl, bookingPasswordHash, bookingIntro } from '@/config/booking'
         {bookingUrl ? (
           <div
             data-booking-widget
-            class="w-full"
-            style="min-height: 1400px;"
+            class="booking-widget w-full"
           ></div>
         ) : (
           <div class="card p-8 md:p-10">
@@ -71,6 +70,27 @@ import { bookingUrl, bookingPasswordHash, bookingIntro } from '@/config/booking'
     </div>
   </section>
 </BaseLayout>
+
+<style is:global>
+  /* Force Calendly's injected widget and its iframe to take a tall,
+     fixed height so the full booking flow (date picker, form with the
+     topic dropdown, confirmation) fits without internal scroll.
+     Calendly's widget.js otherwise leaves the iframe at its own
+     default which is too short for our event configuration. */
+  .booking-widget,
+  .booking-widget.calendly-inline-widget {
+    height: 1800px !important;
+    min-height: 1800px !important;
+    width: 100% !important;
+  }
+  .booking-widget iframe,
+  .booking-widget.calendly-inline-widget iframe {
+    height: 100% !important;
+    min-height: 1800px !important;
+    width: 100% !important;
+    border: 0 !important;
+  }
+</style>
 
 <script define:vars={{ bookingPasswordHash, bookingUrl }}>
   const gate = document.querySelector('[data-booking-gate]');
