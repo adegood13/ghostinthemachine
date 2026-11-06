@@ -55,8 +55,8 @@ export const siteConfig = {
     },
   ],
   schedule: {
-    liveDay: 'Thursday',
-    liveTime: '12:00 PM ET',
+    liveDay: 'Saturday',
+    liveTime: '10:00 AM ET',
   },
   platforms: [
     { name: 'Apple Podcasts', url: 'https://podcasts.apple.com/podcast/ghost-in-the-machine/id1895842333', icon: 'apple' },
